@@ -1,0 +1,33 @@
+<div class="relative flex overflow-x-hidden md:py-4 py-3">
+  <div class="animate-marquee whitespace-nowrap space-x-24">
+    {% for i in (1..50) %}
+      <span class="md:text-lg text-base uppercase">{{ section.settings.content }}</span>
+    {% endfor %}
+  </div>
+
+  <div class="absolute top-0 animate-marquee-absolute whitespace-nowrap space-x-24">
+    {% for i in (1..50) %}
+      <span class="md:text-lg text-base uppercase">{{ section.settings.content }}</span>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:general.marquee_text",
+  "settings": [
+    {
+      "id": "content",
+      "type": "text",
+      "label": "t:general.content",
+      "default": "📦 Get it now, pay less—before tomorrow!"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.marquee_text",
+      "category": "Header"
+    }
+  ]
+}
+{% endschema %}

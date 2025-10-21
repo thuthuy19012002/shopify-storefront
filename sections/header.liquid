@@ -1,0 +1,65 @@
+<header style="background: {{ section.settings.background_color }}" class="md:py-5 py-2.5">
+  <div class="container grid grid-cols-[1fr_auto_1fr]">
+    <nav>
+      <ul class="flex flex-wrap">
+        {% assign menu = linklists[section.settings.menu] %}
+        {% if menu.links.size > 0 %}
+          {% for link in menu.links %}
+            <li style="color: {{ section.settings.text_color }}" class="text-sm p-3">
+              <a href="{{ link.url }}" title="{{ link.title }}">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+    </nav>
+    <a href="{{ shop.url }}" aria-label="{{ shop.name }}" class="my-auto">
+      {% if shop.brand.logo %}
+        <img
+          src="{{ shop.brand.logo | image_url: width: '200x200' }}"
+          alt="{{ shop.name }}"
+          width="auto"
+          height="200"
+        >
+      {% else %}
+        <span class="text-4xl capitalize" style="color: {{ section.settings.text_color }}">{{ shop.name }}</span>
+      {% endif %}
+    </a>
+    <div class="ml-auto my-auto">
+      <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}">
+        <account-icon class="[&_*]:text-white">
+          {%- if customer and customer.has_avatar? -%}
+            {{ customer | avatar }}
+          {%- else -%}
+            {% render 'icon-account' %}
+          {%- endif -%}
+        </account-icon>
+      </a>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "t:general.header",
+  "settings": [
+    {
+      "id": "background_color",
+      "type": "color",
+      "default": "#121212",
+      "label": "t:labels.background"
+    },
+    {
+      "id": "text_color",
+      "type": "color",
+      "default": "#ffffffe6",
+      "label": "t:general.colors"
+    },
+    {
+      "id": "menu",
+      "type": "link_list",
+      "label": "t:labels.menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "dev": "concurrently \"shopify theme dev -e development\" \"npx @tailwindcss/cli -i ./assets/input.css -o ./assets/output.css --watch\""
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.14",
+    "tailwindcss": "^4.1.14"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "daisyui": "^5.3.7"
+  }
+}

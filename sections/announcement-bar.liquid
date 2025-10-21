@@ -1,0 +1,46 @@
+<div
+  class="md:py-4 py-3 text-center border-b"
+  style="background: {{ section.settings.background_color }}; border-color: {{ section.settings.border_color }}"
+>
+  <p style="color: {{ section.settings.text_color }}" class="md:text-xl text-base">
+    {{ section.settings.announcement_bar_text }}
+  </p>
+</div>
+
+{% schema %}
+{
+  "name": "t:labels.announcement_bar",
+  "settings": [
+    {
+      "id": "background_color",
+      "type": "color",
+      "default": "#121212",
+      "label": "t:labels.background"
+    },
+    {
+      "id": "text_color",
+      "type": "color",
+      "default": "#ffffff",
+      "label": "t:general.colors"
+    },
+    {
+      "id": "border_color",
+      "type": "color",
+      "default": "#ffffff14",
+      "label": "t:labels.border_color"
+    },
+    {
+      "id": "announcement_bar_text",
+      "type": "text",
+      "default": "🚚 Free Worldwide Shipping on Orders Over $50 - Limited Time Only!",
+      "label": "t:labels.announcement_bar"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:labels.announcement_bar",
+      "category": "Header"
+    }
+  ]
+}
+{% endschema %}

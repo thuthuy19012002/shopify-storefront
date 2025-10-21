@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+body {
+  color: #121212;
+}
+
+@theme {
+
+  --animate-marquee: marquee 800s linear infinite;
+  --animate-marquee-absolute: marquee-absolute 800s linear infinite;
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes marquee-absolute {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
+  }
+}
+
+@utility container {
+  padding-inline: 15px;
+  margin-inline: auto;
+
+  @variant md {
+    max-width: 1400px;
+    padding-inline: 50px;
+  }
+}
