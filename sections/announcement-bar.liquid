@@ -1,8 +1,13 @@
+{% liquid
+  assign bg_color = section.settings.background_color | default: settings.primary_color
+  assign text_color = section.settings.text_color | default: settings.secondary_color
+%}
+
 <div
   class="md:py-4 py-3 text-center border-b"
-  style="background: {{ section.settings.background_color }}; border-color: {{ section.settings.border_color }}"
+  style="background: {{ bg_color }}; border-color: {{ section.settings.border_color }}"
 >
-  <p style="color: {{ section.settings.text_color }}" class="md:text-xl text-base">
+  <p style="color: {{ text_color }}" class="md:text-xl text-base">
     {{ section.settings.announcement_bar_text }}
   </p>
 </div>
@@ -14,13 +19,11 @@
     {
       "id": "background_color",
       "type": "color",
-      "default": "#121212",
       "label": "t:labels.background"
     },
     {
       "id": "text_color",
       "type": "color",
-      "default": "#ffffff",
       "label": "t:general.colors"
     },
     {

@@ -1,42 +1,91 @@
-<header style="background: {{ section.settings.background_color }}" class="md:py-5 py-2.5">
-  <div class="container grid grid-cols-[1fr_auto_1fr]">
-    <nav>
-      <ul class="flex flex-wrap">
-        {% assign menu = linklists[section.settings.menu] %}
-        {% if menu.links.size > 0 %}
-          {% for link in menu.links %}
-            <li style="color: {{ section.settings.text_color }}" class="text-sm p-3">
-              <a href="{{ link.url }}" title="{{ link.title }}">{{ link.title }}</a>
-            </li>
-          {% endfor %}
-        {% endif %}
-      </ul>
-    </nav>
-    <a href="{{ shop.url }}" aria-label="{{ shop.name }}" class="my-auto">
-      {% if shop.brand.logo %}
-        <img
-          src="{{ shop.brand.logo | image_url: width: '200x200' }}"
-          alt="{{ shop.name }}"
-          width="auto"
-          height="200"
+{% liquid
+  assign bg_color = section.settings.background_color | default: settings.primary_color
+  assign text_color = section.settings.text_color | default: settings.secondary_color
+  assign border_color = section.settings.border_color | default: settings.secondary_color
+  assign menu = linklists[section.settings.menu]
+%}
+<sticky-header class="top-0">
+  <header
+    style="background: {{ bg_color }}"
+    class="md:py-5 py-2.5 transition-transform duration-300"
+  >
+    <div class="container grid grid-cols-[1fr_auto_1fr]">
+      <div class="lg:hidden">
+        {% render 'drawer-menu', text_color: text_color, bg_color: bg_color, border_color: border_color, menu: menu %}
+      </div>
+      <nav class="hidden lg:block">
+        <ul class="flex flex-wrap">
+          {% if menu.links.size > 0 %}
+            {% for link in menu.links %}
+              <li style="color: {{ text_color }}" class="text-sm p-3">
+                <a href="{{ link.url }}" title="{{ link.title }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          {% endif %}
+        </ul>
+      </nav>
+      {% render 'logo', text_color: text_color %}
+      <div class="ml-auto my-auto flex gap-7">
+        <a
+          class="md:block hidden w-fit"
+          href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
         >
-      {% else %}
-        <span class="text-4xl capitalize" style="color: {{ section.settings.text_color }}">{{ shop.name }}</span>
-      {% endif %}
-    </a>
-    <div class="ml-auto my-auto">
-      <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}">
-        <account-icon class="[&_*]:text-white">
-          {%- if customer and customer.has_avatar? -%}
-            {{ customer | avatar }}
-          {%- else -%}
-            {% render 'icon-account' %}
-          {%- endif -%}
-        </account-icon>
-      </a>
+          <account-icon style="color: {{ text_color }}">
+            {%- if customer and customer.has_avatar? -%}
+              {{ customer | avatar }}
+            {%- else -%}
+              {% render 'icon-account', text_color: text_color %}
+            {%- endif -%}
+          </account-icon>
+        </a>
+        {% render 'drawer-cart', text_color: text_color, background_color: bg_color %}
+      </div>
     </div>
-  </div>
-</header>
+  </header>
+</sticky-header>
+
+{% javascript %}
+  class StickyHeader extends HTMLElement {
+    constructor() {
+      super();
+      this.distanceToTop = 0;
+      this.lastScrollTop = 0;
+    }
+
+    connectedCallback() {
+      this.onScrollHandler = this.onScroll.bind(this);
+      window.addEventListener('scroll', this.onScrollHandler);
+      this.distanceToTop = this.offsetTop;
+    }
+
+    disconnectedCallback() {
+      window.removeEventListener('scroll', this.onScrollHandler);
+    }
+
+    onScroll() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const header = this.querySelector('header');
+      const goingUp = scrollTop < this.lastScrollTop;
+      const pastTop = scrollTop > this.distanceToTop;
+
+      if (pastTop) {
+        if (goingUp) {
+          this.classList.add('sticky');
+          header.classList.remove('-translate-y-20');
+          clearTimeout(this.removeStickyTimeout);
+        } else {
+          header.classList.add('-translate-y-20');
+          this.removeStickyTimeout = setTimeout(() => {
+            this.classList.remove('sticky');
+          }, 300);
+        }
+      }
+
+      this.lastScrollTop = Math.max(scrollTop, 0);
+    }
+  }
+  customElements.define('sticky-header', StickyHeader);
+{% endjavascript %}
 
 {% schema %}
 {
@@ -45,14 +94,18 @@
     {
       "id": "background_color",
       "type": "color",
-      "default": "#121212",
       "label": "t:labels.background"
     },
     {
       "id": "text_color",
       "type": "color",
-      "default": "#ffffffe6",
       "label": "t:general.colors"
+    },
+    {
+      "id": "border_color",
+      "type": "color",
+      "default": "#ffffff14",
+      "label": "t:labels.border_color"
     },
     {
       "id": "menu",

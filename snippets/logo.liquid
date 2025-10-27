@@ -1,0 +1,12 @@
+<a href="{{ shop.url }}" aria-label="{{ shop.name }}" class="my-auto">
+  {% if shop.brand.logo %}
+    <img
+      src="{{ shop.brand.logo | image_url: width: '200x200' }}"
+      alt="{{ shop.name }}"
+      width="auto"
+      height="200"
+    >
+  {% else %}
+    <span class="text-4xl capitalize" style="color: {{ text_color | default: '#ffffff' }}">{{ shop.name }}</span>
+  {% endif %}
+</a>

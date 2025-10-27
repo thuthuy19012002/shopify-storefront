@@ -1,56 +1,75 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
-  </div>
+{% liquid
+  assign bg_color = section.settings.background_color | default: settings.primary_color
+  assign text_color = section.settings.text_color | default: settings.secondary_color
+  assign border_color = section.settings.border_color | default: settings.secondary_color
+  assign menu = linklists[section.settings.menu]
+%}
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
+<footer style="background: {{ bg_color }}; color: {{ text_color }};" class="pt-8 pb-5">
+  <div class="container grid grid-cols-2 pb-12">
+    <div>
+      <h2 class="text-2xl font-bold mb-5">{{ section.settings.header_link }}</h2>
+      <ul>
+        {% if menu.links.size > 0 %}
+          {% for link in menu.links %}
+            <li class="text-sm hover:underline underline-offset-2 py-2">
+              <a href="{{ link.url }}" title="{{ link.title }}">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+    </div>
+    <div>
+      <h2 class="text-2xl font-bold mb-5">Contact Us</h2>
+      <ul class="text-base space-y-2">
+        <li>Support email: {{ settings.email }}</li>
+        <li>Contact Phone Number：{{ settings.phone }}</li>
+        <li>Hotline Service Hours： {{ settings.working_time }}</li>
+      </ul>
+    </div>
   </div>
-
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
+  <div class="border-t flex flex-col items-center pt-7" style="border-color: {{ border_color }}">
+    <span class="text-xs">{{ section.settings.copy_right }}</span>
   </div>
 </footer>
-
-{% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  footer .footer__links,
-  footer .footer__payment {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
 
 {% schema %}
 {
   "name": "t:general.footer",
   "settings": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "id": "background_color",
+      "type": "color",
+      "label": "t:labels.background"
     },
     {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
-      "default": true
+      "id": "text_color",
+      "type": "color",
+      "label": "t:general.colors"
+    },
+    {
+      "id": "border_color",
+      "type": "color",
+      "default": "#ffffff14",
+      "label": "t:labels.border_color"
+    },
+    {
+      "id": "header_link",
+      "type": "text",
+      "label": "t:general.header",
+      "default": "Quick links"
+    },
+    {
+      "id": "menu",
+      "type": "link_list",
+      "label": "t:labels.menu",
+      "default": "footer"
+    },
+    {
+      "id": "copy_right",
+      "type": "text",
+      "label": "t:labels.copy_right",
+      "default": "© 2025"
     }
   ]
 }

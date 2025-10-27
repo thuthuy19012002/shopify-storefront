@@ -1,27 +1,19 @@
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}">
   <head>
-    {% # Inlined CSS Variables %}
-    {% render 'css-variables' %}
-
-    {% # Load and preload the critical CSS %}
-    {% comment %} {{ 'critical.css' | asset_url | stylesheet_tag: preload: true, media: 'all' }} {% endcomment %}
-
-    {% # Social, title, etc. %}
     {% render 'meta-tags' %}
 
     {{ content_for_header }}
 
     {% style %}
       {{ settings.type_primary_font | font_face: font_display: 'swap' }}
+
         body {
           --font-primary-font: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
           font-family: var(--font-primary-font);
         }
     {% endstyle %}
-
-    {% # Load the main stylesheet %}
-
+    <script src="{{ 'product-custom.js' | asset_url }}" defer="defer"></script>
     {{ 'output.css' | asset_url | stylesheet_tag }}
   </head>
 

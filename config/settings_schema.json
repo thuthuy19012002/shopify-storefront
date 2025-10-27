@@ -58,15 +58,15 @@
     "settings": [
       {
         "type": "color",
-        "id": "background_color",
-        "default": "#FFFFFF",
-        "label": "t:labels.background"
+        "id": "primary_color",
+        "default": "#121212",
+        "label": "t:labels.primary"
       },
       {
         "type": "color",
-        "id": "foreground_color",
-        "default": "#333333",
-        "label": "t:labels.foreground"
+        "id": "secondary_color",
+        "default": "#ffffffe6",
+        "label": "t:labels.secondary"
       },
       {
         "type": "range",
@@ -78,6 +78,29 @@
         "label": "t:labels.input_corner_radius",
         "default": 4
       }
+    ]
+  },
+  {
+    "name": "t:general.information",
+    "settings": [
+      {
+        "type": "text",
+        "id": "email",
+        "label": "t:labels.email",
+        "default": "test@test.test"
+      },
+      {
+        "type": "text",
+        "id": "phone",
+        "label": "t:labels.phone",
+        "default": "012345678"
+      },
+      {
+        "type": "text",
+        "id": "working_time",
+        "label": "t:labels.working_time",
+        "default": "24/7"
+      },
     ]
   }
 ]

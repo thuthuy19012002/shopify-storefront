@@ -1,0 +1,96 @@
+<cart-drawer>
+  <div class="drawer drawer-end">
+    <input id="my-drawer-5" type="checkbox" class="drawer-toggle">
+    <div class="drawer-content">
+      <label for="my-drawer-5" class="relative" style="color: {{ text_color }}">
+        <svg
+          class="size-5"
+          aria-hidden="true"
+          focusable="false"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 35.53 44.83"
+        >
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12.36,10.93l29.38-.08q.72,16.41,1.45,32.8H10.66Z" transform="translate(-9.16 -0.32)"></path>
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19.39,10.85V9.52a7.7,7.7,0,1,1,15.39,0v1.33" transform="translate(-9.16 -0.32)"></path>
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19.12,15.46a7.7,7.7,0,0,0,15.08,0" transform="translate(-9.16 -0.32)"></path>
+        </svg>
+        {% if cart.item_count > 0 %}
+          <div
+            class="absolute -right-1 -bottom-1 size-3.5 text-[8px] rounded-full flex items-center justify-center font-bold cart-count-bubble"
+            style="color: {{ background_color }}; background: {{ text_color }};"
+          >
+            {{ cart.item_count }}
+          </div>
+        {% endif %}
+      </label>
+    </div>
+    <div class="drawer-side">
+      <label for="my-drawer-5" aria-label="close sidebar" class="drawer-overlay"></label>
+      <div
+        style="background: {{ text_color }}; color: {{ background_color }};"
+        class="w-[400px] max-w-[calc(100vw-30px)] min-h-full"
+      >
+        <div class="p-4 relative border-b border-[#12121214]">
+          <h2 class="text-[31px] font-bold">Cart • {{ cart.item_count }} items</h2>
+          <label for="my-drawer-5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
+              class="size-6 absolute top-7 right-4"
+              fill="none"
+              viewBox="0 0 18 17"
+            >
+                <path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.431 7.579 7.282a.501.501 0 00.846-.37.5.5 0 00-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 10-.707-.708L8.991 7.853 1.413.573a.5.5 0 10-.693.72l7.563 7.268-7.418 7.417z" fill="currentColor">
+              </path>
+            </svg>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</cart-drawer>
+
+{% javascript %}
+  class CartDrawer extends HTMLElement {
+    constructor() {
+      super();
+      this.drawer = null;
+      this.widthScrollBar = 0;
+    }
+
+    connectedCallback() {
+      this.drawer = this.querySelector('#my-drawer-5');
+
+      this.widthScrollBar = window.innerWidth - document.documentElement.clientWidth;
+
+      if (this.drawer) {
+        this.drawer.addEventListener('change', () => this.handleDrawerToggle());
+      }
+    }
+
+    handleDrawerToggle() {
+      if (!this.drawer) return;
+
+      if (this.drawer.checked) {
+        document.body.style.paddingRight = this.widthScrollBar + 'px';
+      } else {
+        document.body.style.paddingRight = '';
+      }
+    }
+  }
+
+  customElements.define('cart-drawer', CartDrawer);
+{% endjavascript %}
+
+{% stylesheet %}
+  html:has(#my-drawer-5:checked),
+  body:has(#my-drawer-5:checked) {
+    scrollbar-width: none;
+  }
+
+  html:has(#my-drawer-5:checked)::-webkit-scrollbar,
+  body:has(#my-drawer-5:checked)::-webkit-scrollbar {
+    display: none;
+  }
+{% endstylesheet %}

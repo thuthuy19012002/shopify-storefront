@@ -8,7 +8,6 @@ body {
 }
 
 @theme {
-
   --animate-marquee: marquee 800s linear infinite;
   --animate-marquee-absolute: marquee-absolute 800s linear infinite;
 
@@ -39,4 +38,8 @@ body {
     max-width: 1400px;
     padding-inline: 50px;
   }
+}
+
+.shopify-section-group-header-group {
+  display: unset;
 }
