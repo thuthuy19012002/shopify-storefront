@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "concurrently \"shopify theme dev -e development\" \"npx @tailwindcss/cli -i ./assets/input.css -o ./assets/output.css --watch\""
+    "dev": "concurrently \"shopify theme dev\" \"npx @tailwindcss/cli -i ./assets/input.css -o ./assets/output.css --watch\""
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.1.14",

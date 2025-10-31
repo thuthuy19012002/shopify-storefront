@@ -1,0 +1,104 @@
+{% liquid
+  assign bg_color = section.settings.background_color | default: settings.primary_color
+  assign text_color = section.settings.text_color | default: settings.secondary_color
+  assign product = all_products[section.settings.featured_product]
+  if product == blank
+    assign product = collections.all.products.first
+  endif
+%}
+
+<section style="background: {{ bg_color }}; color: {{ text_color }}">
+  {% if product %}
+    <div class="scroll-fade-in container md:py-9 py-7 md:flex">
+      <div class="md:w-[55%] w-full flex justify-center">
+        <img
+          src="{{ product.featured_image | image_url: width: '715x715'}}"
+          alt="{{ product.title }}"
+          class="w-full md:max-w-[100vh] aspect-square object-cover rounded-xl"
+          width="auto"
+          height="auto"
+        >
+      </div>
+      <div class="md:w-[45%] w-full md:px-[50px] lg:px-[70px] md:py-0 pt-4">
+        <h1 class="md:text-[39px] text-3xl font-bold">{{ product.title }}</h1>
+        <div class="my-4">
+          <span class="text-xl font-bold mr-1" style=" color: {{ section.settings.color_price_product }}">
+            {{ product.price | money }}
+          </span>
+
+          {% if product.compare_at_price > product.price %}
+            <span
+              class="text-base font-bold line-through"
+              style=" color: {{ section.settings.color_compare_at_price_product }}"
+            >
+              {{ product.compare_at_price | money }}
+            </span>
+          {% endif %}
+        </div>
+        {% render 'custom-button',
+          type: 'second',
+          text_color: text_color,
+          bg_color: bg_color,
+          text_button: 'Add to cart'
+        %}
+        {% render 'custom-button', text_color: text_color, text_button: 'Checkout' %}
+        <div class="mt-6 group">
+          <a
+            href="{{ product.url }}"
+            class="text-sm group-hover:underline underline-offset-4 inline-flex items-center gap-3"
+          >
+            View full details
+            <div class="relative flex items-center">
+              <div
+                class="w-2.5 h-[1px] group-hover:w-3.5 transition-all duration-300"
+                style="background: {{ text_color }}"
+              ></div>
+              {% render 'icon-chevron-right', text_color: text_color, classIcon: 'size-3.5 absolute -right-2' %}
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "t:general.promotional_banner",
+  "settings": [
+    {
+      "id": "featured_product",
+      "type": "product",
+      "label": "t:general.product"
+    },
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "t:labels.background"
+    },
+    {
+      "id": "text_color",
+      "type": "color",
+      "label": "t:general.colors"
+    },
+    {
+      "id": "color_price_product",
+      "type": "color",
+      "label": "t:general.colors",
+      "default": "#b90000"
+    },
+    {
+      "id": "color_compare_at_price_product",
+      "type": "color",
+      "label": "t:general.colors",
+      "default": "#b90000e6"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.promotional_banner",
+      "category": "Body"
+    }
+  ]
+}
+{% endschema %}

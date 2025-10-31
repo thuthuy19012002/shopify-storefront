@@ -1,0 +1,52 @@
+{% liquid
+  assign type = type | default: 'default'
+  assign text_button = text_button | default: 'text'
+  assign bg_color = bg_color | default: settings.primary_color
+  assign text_color = text_color | default: settings.secondary_color
+%}
+
+{% case type %}
+  {% when 'first' %}
+    <button
+      style="border-color: {{ text_color }}; color: {{ text_color }}"
+      class="group relative flex items-center overflow-hidden border-2 rounded-lg px-7 py-3 text-lg font-bold transition-all duration-300 hover:pr-14"
+    >
+      <span class="uppercase text-base font-bold">{{ text_button }}</span>
+      <span
+        class="absolute right-0 translate-x-6 group-hover:-translate-x-6 transition-all duration-300"
+      >
+        {% render 'icon-move-right', text_color: text_color %}
+      </span>
+    </button>
+  {% when 'second' %}
+    <button
+      style="--custom_bg_color: {{ bg_color }}; --custom_text_color: {{ text_color }};"
+      class="group relative uppercase text-xl font-bold w-full rounded-lg border-2 border-[var(--custom_text_color)] flex justify-center overflow-hidden"
+    >
+      <span
+        class="absolute left-1/2 -translate-x-1/2 h-full w-[calc(100%+5px)] transition-all duration-300 group-hover:w-0 bg-[var(--custom_text_color)]"
+      ></span>
+      <span class="relative py-2 text-center transition-all duration-300 text-[var(--custom_bg_color)] group-hover:text-[var(--custom_text_color)]">
+        {{ text_button }}
+      </span>
+    </button>
+  {% when 'third' %}
+    <button
+      style="--custom_bg_color: {{ text_color}}; --custom_text_color: {{ bg_color }};"
+      class="group relative text-base font-bold !w-fit px-7 rounded-lg border-2 border-[var(--custom_text_color)] flex justify-center overflow-hidden"
+    >
+      <span
+        class="absolute left-1/2 -translate-x-1/2 h-full w-[calc(100%+5px)] transition-all duration-300 group-hover:w-0 bg-[var(--custom_text_color)]"
+      ></span>
+      <span class="relative py-2 text-center transition-all duration-300 text-[var(--custom_bg_color)] group-hover:text-[var(--custom_text_color)]">
+        {{ text_button }}
+      </span>
+    </button>
+  {% else %}
+    <button
+      style="border-color: {{ text_color }}; color: {{ text_color }}"
+      class="group relative uppercase text-xl font-bold w-full rounded-lg border-2 py-2 mt-2.5 flex justify-center"
+    >
+      {{ text_button }}
+    </button>
+{% endcase %}

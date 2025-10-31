@@ -1,0 +1,105 @@
+{% liquid
+  assign text_color = section.settings.text_color | default: settings.secondary_color
+%}
+
+<section class="relative overflow-hidden" style="color: {{ text_color }}">
+  <div class="absolute -z-10 inset-0">
+    {% if section.settings.banner_hero != blank %}
+      <img
+        src="{{ section.settings.banner_hero | image_url }}"
+        alt="banner hero"
+        width="100%"
+        height="auto"
+        class="size-full object-cover object-center"
+      >
+    {% else %}
+      <img
+        src="{{ 'images/hero-banner.webp' | asset_url }}"
+        alt="banner hero"
+        width="100%"
+        height="auto"
+        class="size-full object-cover object-center"
+      >
+    {% endif %}
+  </div>
+  <div
+    class="absolute -z-10 inset-0"
+    style="background-color: {{ section.settings.overlay_hero }}; opacity: {{ section.settings.opacity_overlay_hero }}%;"
+  ></div>
+  <div class="scroll-fade-in py-12 container flex flex-col gap-5 justify-center items-center min-h-[320px] md:min-h-[520px]">
+    {% if section.settings.title_hero != blank %}
+      <h2 class="text-center uppercase lg:text-[55px] md:text-[42px] text-4xl font-bold">
+        {{ section.settings.title_hero }}
+      </h2>
+    {% endif %}
+    {% if section.settings.subtitle_hero != blank %}
+      <p class="text-center text-base">{{ section.settings.subtitle_hero }}</p>
+    {% endif %}
+    <div class="text-center">
+      <a href="{{ section.settings.link_button_hero }}">
+        {% render 'custom-button',
+          type: 'first',
+          text_color: text_color,
+          text_button: section.settings.title_button_hero
+        %}
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:general.hero",
+  "settings": [
+    {
+      "id": "banner_hero",
+      "type": "image_picker",
+      "label": "t:labels.banner"
+    },
+    {
+      "id": "overlay_hero",
+      "type": "color",
+      "label": "t:labels.overlay"
+    },
+    {
+      "id": "opacity_overlay_hero",
+      "type": "range",
+      "label": "t:labels.overlay",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "id": "title_hero",
+      "type": "text",
+      "label": "t:options.text_style.title",
+      "default": "ULTIMATE CONTROL, EVERY DRIVE"
+    },
+    {
+      "id": "subtitle_hero",
+      "type": "text",
+      "label": "t:options.text_style.subtitle",
+      "default": "Real-time tracking, enhanced security, and peace of mind for every journey."
+    },
+    {
+      "id": "title_button_hero",
+      "type": "text",
+      "label": "t:labels.button",
+      "default": "EXPLORE NOW"
+    },
+    {
+      "id": "link_button_hero",
+      "type": "collection",
+      "label": "t:labels.link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.hero",
+      "category": "Body"
+    }
+  ]
+}
+{% endschema %}

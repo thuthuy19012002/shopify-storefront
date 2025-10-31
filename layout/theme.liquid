@@ -13,8 +13,9 @@
           font-family: var(--font-primary-font);
         }
     {% endstyle %}
-    <script src="{{ 'product-custom.js' | asset_url }}" defer="defer"></script>
+    {% comment %} <script src="{{ 'product-custom.js' | asset_url }}" defer="defer"></script> {% endcomment %}
     {{ 'output.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
   </head>
 
   <body>

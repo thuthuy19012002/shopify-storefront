@@ -4,7 +4,7 @@
   assign border_color = section.settings.border_color | default: settings.secondary_color
   assign menu = linklists[section.settings.menu]
 %}
-<sticky-header class="top-0">
+<sticky-header class="top-0 z-10">
   <header
     style="background: {{ bg_color }}"
     class="md:py-5 py-2.5 transition-transform duration-300"
@@ -48,14 +48,16 @@
   class StickyHeader extends HTMLElement {
     constructor() {
       super();
-      this.distanceToTop = 0;
       this.lastScrollTop = 0;
+      // this.distanceToTop = 0;
+      this.distanceFromBottomToTop = 0;
     }
 
     connectedCallback() {
       this.onScrollHandler = this.onScroll.bind(this);
       window.addEventListener('scroll', this.onScrollHandler);
-      this.distanceToTop = this.offsetTop;
+      // this.distanceToTop = this.offsetTop;
+      this.distanceFromBottomToTop = this.offsetTop + this.offsetHeight;
     }
 
     disconnectedCallback() {
@@ -66,9 +68,9 @@
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const header = this.querySelector('header');
       const goingUp = scrollTop < this.lastScrollTop;
-      const pastTop = scrollTop > this.distanceToTop;
+      const pastBottom = scrollTop > this.distanceFromBottomToTop;
 
-      if (pastTop) {
+      if (pastBottom) {
         if (goingUp) {
           this.classList.add('sticky');
           header.classList.remove('-translate-y-20');

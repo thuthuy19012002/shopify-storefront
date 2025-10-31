@@ -1,0 +1,44 @@
+{% liquid
+  assign bg_color = section.settings.background_color | default: settings.primary_color
+%}
+
+<section
+  style="color: {{ bg_color }}"
+  class="
+    {% if section.settings.flip_horizontal %}scale-x-[-1]{% endif %}
+    {% if section.settings.flip_vertical %}scale-y-[-1]{% endif %}
+  "
+>
+  {% render 'icon-section-break' %}
+</section>
+
+{% schema %}
+{
+  "name": "t:general.section_break",
+  "settings": [
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "t:labels.background"
+    },
+    {
+      "type": "checkbox",
+      "id": "flip_horizontal",
+      "label": "t:options.flip.horizontally",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "flip_vertical",
+      "label": "t:options.flip.vertically",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.section_break",
+      "category": "Break"
+    }
+  ]
+}
+{% endschema %}

@@ -17,6 +17,8 @@
     "footer": "Footer",
     "group": "Group",
     "header": "Header",
+    "hero": "Hero",
+    "promotional_banner": "Promotional Banner", 
     "layout": "Layout",
     "main": "Main",
     "page": "Page",
@@ -34,6 +36,9 @@
     "typography": "Typography",
     "marquee_text": "Marquee text",
     "information": "Information",
+    "section_break": "Section break",
+    "product_highlights": "Product Highlights",
+    "why_choose_us": "Why choose us"
   },
   "labels": {
     "alignment": "Alignment",
@@ -58,7 +63,13 @@
     "email": "Email",
     "phone": "Phone",
     "working_time": "Working time",
-    "copy_right": "Copy right"
+    "copy_right": "Copy right",
+    "banner": "Banner",
+    "overlay": "Overlay",
+    "button": "Button",
+    "link": "Link",
+    "icon": "Icon",
+    "table": "Table"
   },
   "options": {
     "alignment": {
@@ -83,5 +94,9 @@
       "subtitle": "Subtitle",
       "normal": "Normal text"
     },
+    "flip": {
+      "horizontally": "Flip horizontally",
+      "vertically": "Flip vertically"
+    }
   }
 }

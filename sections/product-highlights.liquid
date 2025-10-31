@@ -1,0 +1,131 @@
+{% liquid
+  assign bg_color = section.settings.background_color | default: settings.secondary_color
+  assign text_color = section.settings.text_color | default: settings.primary_color
+  assign title_default = 'Real-Time Location Tracking'
+  assign subtitle_default = 'Instantly pinpoint your vehicle’s exact location with precise GPS coordinates, no matter where you are.'
+%}
+
+<section style="background: {{ bg_color }}; color: {{ text_color }}">
+  <div class="scroll-fade-in container md:py-9 py-7">
+    <h2 class="text-center md:text-[39px] text-3xl font-bold mb-5">{{ section.settings.title_product_highlights }}</h2>
+    <p class="text-center text-base">{{ section.settings.subtitle_product_highlights }}</p>
+    <div class="mt-10 grid md:grid-cols-3 gap-10 md:gap-0 items-center">
+      <div class="space-y-[30px] md:px-5 px-2.5">
+        {% if section.blocks.size > 0 %}
+          {% for block in section.blocks limit: 2 %}
+            {% render 'highlight_item',
+              icon: block.settings.icon,
+              title: block.settings.title,
+              subtitle: block.settings.subtitle
+            %}
+          {% endfor %}
+        {% else %}
+          {% for i in (1..2) %}
+            {% render 'highlight_item', title: title_default, subtitle: subtitle_default %}
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="md:px-5 px-2.5">
+        {% if section.settings.banner_product_highlights != blank %}
+          <img
+            src="{{ section.settings.banner_product_highlights | image_url: width: '400x400' }}"
+            alt="banner"
+            width="100%"
+            height="auto"
+            class="w-fulll aspect-square object-cover object-center rounded-xl"
+          >
+        {% else %}
+          <img
+            src="{{ 'images/hero-banner.webp' | asset_url }}"
+            alt="banner"
+            width="100%"
+            height="auto"
+            class="w-fulll aspect-square object-cover object-center rounded-xl"
+          >
+        {% endif %}
+      </div>
+      <div class="space-y-[30px] md:px-5 px-2.5">
+        {% if section.blocks.size > 0 %}
+          {% for block in section.blocks offset: 2 %}
+            {% render 'highlight_item',
+              icon: block.settings.icon,
+              title: block.settings.title,
+              subtitle: block.settings.subtitle
+            %}
+          {% endfor %}
+        {% else %}
+          {% for i in (1..2) %}
+            {% render 'highlight_item', title: title_default, subtitle: subtitle_default %}
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:general.product_highlights",
+  "settings": [
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "t:labels.background"
+    },
+    {
+      "id": "text_color",
+      "type": "color",
+      "label": "t:general.colors"
+    },
+    {
+      "id": "title_product_highlights",
+      "type": "text",
+      "label": "t:options.text_style.title",
+      "default": "EasyFind: Your All-in-One Tracker"
+    },
+    {
+      "id": "subtitle_product_highlights",
+      "type": "text",
+      "label": "t:options.text_style.subtitle",
+      "default": "Track Anything, Anytime, Anywhere"
+    },
+    {
+      "id": "banner_product_highlights",
+      "type": "image_picker",
+      "label": "t:labels.banner"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "highlight",
+      "name": "Highlight item",
+      "settings": [
+        {
+          "id": "icon",
+          "type": "image_picker",
+          "label": "t:labels.icon"
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "label": "t:options.text_style.title",
+          "default": "Real-Time Location Tracking"
+        },
+        {
+          "id": "subtitle",
+          "type": "richtext",
+          "label": "t:options.text_style.subtitle",
+          "default": "<p>Instantly pinpoint your vehicle’s exact location with precise GPS coordinates, no matter where you are.</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "t:general.product_highlights",
+      "category": "Body"
+    }
+  ]
+}
+{% endschema %}

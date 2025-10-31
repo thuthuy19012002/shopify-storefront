@@ -1,0 +1,123 @@
+{% liquid
+  assign bg_color = section.settings.background_color | default: settings.primary_color
+  assign text_color = section.settings.text_color | default: settings.secondary_color
+%}
+
+<section style="background: {{ bg_color }}; color: {{ text_color }}">
+  <div class="scroll-fade-in container grid grid-cols-2 gap-12 md:py-9 py-7">
+    <div>
+      <h2 class="md:text-[39px] text-3xl font-bold text-center">
+        {{ section.settings.title_product_highlights }}
+      </h2>
+      <div class="text-center text-base my-5">{{ section.settings.subtitle_product_highlights }}</div>
+      <div class="w-full flex justify-center">
+        {%
+          render 'custom-button',
+          type: 'third',
+          text_button: 'Stay Ahead with Real-Time Updates',
+          text_color: text_color,
+          bg_color: section.settings.color_button | default: text_color
+        %}
+      </div>
+    </div>
+    <div style="color: {{ bg_color }}">
+      <table class="mx-auto">
+        <thead style="color: {{ text_color }}">
+          <tr>
+            <th class="py-1.5 px-2.5"></th>
+            <th style="background: {{ section.settings.color_column_even }};" class="rounded-t-2xl py-1.5 px-2.5">
+              Product A
+            </th>
+            <th class="rounded-t-2xl py-1.5 px-2.5">Product B</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b">
+            <td style="background: {{ text_color }};" class="rounded-tl-2xl py-2.5 px-4 text-lg font-bold text-center">
+              Real-Time Tracking
+            </td>
+            <td style="background: {{ section.settings.color_column_even }};" class="py-2.5 px-5">
+              {% render 'icon-status', status: true %}
+            </td>
+            <td style="background: {{ text_color }};" class="rounded-tr-2xl py-2.5 px-4">
+              {% render 'icon-status', status: false, text_color: bg_color %}
+            </td>
+          </tr>
+          <tr class="border-b">
+            <td style="background: {{ text_color }};" class="py-2.5 px-4 text-lg font-bold text-center">
+              User-Friendly Interface
+            </td>
+            <td style="background: {{ section.settings.color_column_even }};" class="py-2.5 px-5">
+              {% render 'icon-status', status: true %}
+            </td>
+            <td style="background: {{ text_color }};" class="py-2.5 px-4">
+              {% render 'icon-status', status: false, text_color: bg_color %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:general.why_choose_us",
+  "settings": [
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "t:labels.background"
+    },
+    {
+      "id": "text_color",
+      "type": "color",
+      "label": "t:general.colors"
+    },
+    {
+      "id": "title_product_highlights",
+      "type": "text",
+      "label": "t:options.text_style.title",
+      "default": "Why Choose Us?"
+    },
+    {
+      "id": "subtitle_product_highlights",
+      "type": "richtext",
+      "label": "t:options.text_style.subtitle",
+      "default": "<p>Choosing our GPS tracker means investing in superior technology, peace of mind, and a user experience that prioritizes your safety and convenience. While other brands may offer similar features, our commitment to quality and customer satisfaction ensures that you get the best protection available on the market.</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:labels.button"
+    },
+    {
+      "id": "title_button",
+      "type": "text",
+      "label": "t:options.text_style.title",
+      "default": "Stay Ahead with Real-Time Updates"
+    },
+    {
+      "id": "color_button",
+      "type": "color",
+      "label": "t:general.colors",
+      "default": "#dd1d1d"
+    },
+    {
+      "type": "header",
+      "content": "t:labels.table"
+    },
+    {
+      "id": "color_column_even",
+      "type": "color",
+      "label": "t:general.colors",
+      "default": "#2e2a39"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.why_choose_us",
+      "category": "Body"
+    }
+  ]
+}
+{% endschema %}

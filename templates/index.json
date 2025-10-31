@@ -1,16 +1,47 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    
+    "hero": {
+      "type": "hero",
+      "settings": {}
+    },
+    "promotional-banner": {
+      "type": "promotional-banner",
+      "settings": {}
+    },
+    "section-break-1": {
+      "type": "section-break",
+      "settings": {
+        "flip_vertical": true
+      }
+    },
+    "product-highlights": {
+      "type": "product-highlights",
+      "settings": {
+        "flip_vertical": true
+      }
+    },
+    "section-break-2": {
+      "type": "section-break",
+      "settings": {}
+    },
+    "why-choose-us": {
+      "type": "why-choose-us",
+      "settings": {}
+    },
+    "section-break-3": {
+      "type": "section-break",
+      "settings": {
+        "flip_vertical": true
+      }
+    },
   },
   "order": [
+    "hero",
+    "promotional-banner",
+    "section-break-1",
+    "product-highlights",
+    "section-break-2",
+    "why-choose-us",
+    "section-break-3"
   ]
 }

@@ -43,3 +43,12 @@ body {
 .shopify-section-group-header-group {
   display: unset;
 }
+
+.scroll-fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.scroll-fade-in.scroll-fade-in-cancel {
+  opacity: 1;
+}
