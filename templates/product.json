@@ -3,9 +3,14 @@
     "main": {
       "type": "product",
       "settings": {}
+    },
+    "section-break-wave": {
+      "type": "section-break-wave",
+      "settings": {}
     }
   },
   "order": [
-    "main"
+    "main",
+    "section-break-wave"
   ]
 }

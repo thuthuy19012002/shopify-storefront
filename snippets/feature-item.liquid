@@ -1,0 +1,17 @@
+<div class="flex items-center gap-2.5">
+  {% if icon != blank %}
+    <img
+      src="{{ icon | image_url: width: "50", height: "50" }}"
+      alt="icon"
+      width="50"
+      height="50"
+      class="size-[50px]"
+    >
+  {% else %}
+    {% render 'icon-badge-question-mark', classIcon: 'size-[50px]' %}
+  {% endif %}
+  <div class="space-y-[5px]">
+    <h3 class="font-bold text-base">{{ title }}</h3>
+    <div class="text-[13px]">{{ subtitle }}</div>
+  </div>
+</div>

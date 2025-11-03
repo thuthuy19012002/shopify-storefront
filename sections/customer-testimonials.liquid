@@ -1,0 +1,175 @@
+{% liquid
+  assign bg_color = section.settings.background_color | default: settings.secondary_color
+  assign text_color = section.settings.text_color | default: settings.primary_color
+%}
+
+<section style="background: {{ bg_color }}; color: {{ text_color }}; --custom-color: {{ text_color }}">
+  <div class="scroll-fade-in container md:py-9 py-7">
+    <h2 class="md:text-[39px] text-3xl font-bold text-center">{{ section.settings.title_customer_testimonials }}</h2>
+    <div class="mt-2.5 text-lg flex gap-2 items-center justify-center md:mb-9 mb-6">
+      {{ section.settings.subtitle_customer_testimonials }}
+      <b>
+        <span class="text-2xl">{{ section.settings.average_star }}</span> / 5
+      </b>
+      {% render 'icon-stars' %}
+    </div>
+    <div class="w-full">
+      {% if section.blocks.size > 0 %}
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+              <div class="swiper-slide">
+                {% render 'testimonial-item',
+                  color: block.settings.color,
+                  title: block.settings.title,
+                  subtitle: block.settings.subtitle,
+                  author: block.settings.author
+                %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="mt-8 flex gap-2 items-center justify-center">
+          <div class="swiper-button-prev !relative !size-[18px] !mt-0 !left-0">
+            <svg
+              class="scale-x-[-1] text-[var(--custom-color)]"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 40 40"
+              width="18"
+              height="18"
+              focusable="false"
+            >
+              <path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path>
+            </svg>
+          </div>
+          <div
+            class="swiper-pagination !relative !w-fit !bottom-0 [&_span]:!bg-[var(--custom-color)] [&_span]:!opacity-60 [&_span.swiper-pagination-bullet-active]:!opacity-100"
+          ></div>
+          <div class="swiper-button-next !relative !size-[18px] !mt-0 !right-0">
+            <svg
+              class="text-[var(--custom-color)]"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 40 40"
+              width="18"
+              height="18"
+              focusable="false"
+            >
+              <path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path>
+            </svg>
+          </div>
+        </div>
+      {% else %}
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
+            {% for block in (1..3) %}
+              <div class="swiper-slide">
+                {% render 'testimonial-item',
+                  color: '#f3f3f3',
+                  title: 'Recovered My Lost Luggage!',
+                  subtitle: 'I travel frequently, and my luggage was always a concern until I got the EasyFind tracker. During my last trip, my bag got lost, but I was able to track it down within hours thanks to EasyFind.',
+                  author: 'James W.r'
+                %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.mySwiper', {
+      slidesPerView: 1,
+      spaceBetween: 40,
+      pagination: { el: '.swiper-pagination', clickable: true },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        0: { slidesPerView: 1 },
+        768: { slidesPerView: 3 },
+      },
+    });
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:general.customer_testimonials",
+  "settings": [
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "t:labels.background"
+    },
+    {
+      "id": "text_color",
+      "type": "color",
+      "label": "t:general.colors"
+    },
+    {
+      "id": "title_customer_testimonials",
+      "type": "text",
+      "label": "t:options.text_style.title",
+      "default": "Trustpilot reviews"
+    },
+    {
+      "id": "subtitle_customer_testimonials",
+      "type": "text",
+      "label": "t:options.text_style.subtitle",
+      "default": "Excellent"
+    },
+    {
+      "id": "average_star",
+      "type": "range",
+      "label": "t:labels.average_star",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "default": 5
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial item",
+      "settings": [
+        {
+          "id": "color",
+          "type": "color",
+          "label": "t:general.colors",
+          "default": "#f3f3f3"
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "label": "t:options.text_style.title",
+          "default": "A Lifesaver for Busy Parents!"
+        },
+        {
+          "id": "subtitle",
+          "type": "richtext",
+          "label": "t:options.text_style.subtitle",
+          "default": "<p>I recently started using EasyFind to keep track of my kids when they’re out playing in the neighborhood. The real-time location updates give me so much peace of mind, and the battery life is incredible! I can’t imagine not having this little device. Highly recommend for any parent!</p>"
+        },
+        {
+          "id": "author",
+          "type": "text",
+          "label": "t:labels.author",
+          "default": "Sarah L."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "t:general.customer_testimonials",
+      "category": "Body"
+    }
+  ]
+}
+{% endschema %}

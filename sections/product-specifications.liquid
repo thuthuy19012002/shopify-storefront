@@ -1,0 +1,113 @@
+{% liquid
+  assign bg_color = section.settings.background_color | default: settings.secondary_color
+  assign text_color = section.settings.text_color | default: settings.primary_color
+%}
+
+<section style="background: {{ bg_color }}; color: {{ text_color }}">
+  <div class="scroll-fade-in container md:py-9 py-7 grid items-center md:grid-cols-2 md:gap-12 gap-5">
+    <div>
+      <h2 class="md:text-[39px] text-3xl font-bold text-center">{{ section.settings.title_product_specifications }}</h2>
+      <div class="text-center text-base my-5">{{ section.settings.subtitle_product_specifications }}</div>
+      <div>
+        {% if section.settings.banner_product_specifications != blank %}
+          <img
+            src="{{ section.settings.banner_product_specifications | image_url: width: '600px' }}"
+            alt="banner"
+            width="100%"
+            height="auto"
+            class="w-full object-contain rounded-xl"
+          >
+        {% else %}
+          <img
+            src="{{ 'images/hero-banner.webp' | asset_url }}"
+            alt="banner"
+            width="100%"
+            height="auto"
+            class="w-full object-contain rounded-xl"
+          >
+        {% endif %}
+      </div>
+    </div>
+    <div class="divide-y-2 divide-[#1212120d] border-y-2 border-[#1212120d]">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          {% render 'specification-item', percent: block.settings.percent, content: block.settings.content %}
+        {% endfor %}
+      {% else %}
+        {% for i in (1..2) %}
+          {% render 'specification-item',
+            percent: 50,
+            content: 'Feeling more confident and secure during their travels with our GPS tracker'
+          %}
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:general.product_specifications",
+  "settings": [
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "t:labels.background"
+    },
+    {
+      "id": "text_color",
+      "type": "color",
+      "label": "t:general.colors"
+    },
+    {
+      "id": "title_product_specifications",
+      "type": "text",
+      "label": "t:options.text_style.title",
+      "default": "Travel with confidence"
+    },
+    {
+      "id": "subtitle_product_specifications",
+      "type": "richtext",
+      "label": "t:options.text_style.subtitle",
+      "default": "<p>Over 90% of our customers report that our GPS tracker has significantly improved their travel safety and vehicle security. Join them and experience peace of mind on every journey!</p>"
+    },
+    {
+      "id": "banner_product_specifications",
+      "type": "image_picker",
+      "label": "t:labels.banner"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "specifications",
+      "name": "Specification item",
+      "settings": [
+        {
+          "id": "color",
+          "type": "color",
+          "label": "t:general.colors"
+        },
+        {
+          "id": "percent",
+          "type": "range",
+          "min": 0,
+          "max": 100,
+          "default": 0,
+          "label": "t:labels.percent"
+        },
+        {
+          "id": "content",
+          "type": "richtext",
+          "label": "t:general.content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.product_specifications",
+      "category": "Body"
+    }
+  ]
+}
+{% endschema %}

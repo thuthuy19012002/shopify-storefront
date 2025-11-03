@@ -34,6 +34,18 @@
         "flip_vertical": true
       }
     },
+    "product-specifications": {
+      "type": "product-specifications",
+      "settings": {}
+    },
+    "customer-testimonials": {
+      "type": "customer-testimonials",
+      "settings": {}
+    },
+    "features-section": {
+      "type": "features-section",
+      "settings": {}
+    }
   },
   "order": [
     "hero",
@@ -42,6 +54,9 @@
     "product-highlights",
     "section-break-2",
     "why-choose-us",
-    "section-break-3"
+    "section-break-3",
+    "product-specifications",
+    "customer-testimonials",
+    "features-section"
   ]
 }

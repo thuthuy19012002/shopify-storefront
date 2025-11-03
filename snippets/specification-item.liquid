@@ -1,0 +1,11 @@
+<div class="flex items-center gap-5 py-2.5" style="color: {{ color }}">
+  <div
+    class="radial-progress min-w-[70px]"
+    style="--value:{{percent}};--size:70px;"
+    aria-valuenow="70"
+    role="progressbar"
+  >
+    <p class="text-lg font-bold">{{ percent }}%</p>
+  </div>
+  <div class="md:text-base text-[15px]">{{ content }}</div>
+</div>

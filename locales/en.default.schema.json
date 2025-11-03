@@ -37,8 +37,12 @@
     "marquee_text": "Marquee text",
     "information": "Information",
     "section_break": "Section break",
+    "section_break_wave": "Section break wave",
     "product_highlights": "Product Highlights",
-    "why_choose_us": "Why choose us"
+    "why_choose_us": "Why choose us",
+    "product_specifications": "Product Specifications",
+    "customer_testimonials": "Customer Testimonials",
+    "features_section": "Features section"
   },
   "labels": {
     "alignment": "Alignment",
@@ -69,7 +73,11 @@
     "button": "Button",
     "link": "Link",
     "icon": "Icon",
-    "table": "Table"
+    "table": "Table",
+    "status": "Status",
+    "percent": "Percent",
+    "average_star": "Average Star",
+    "author": "Author"
   },
   "options": {
     "alignment": {

@@ -1,10 +1,14 @@
 {% liquid
   assign bg_color = section.settings.background_color | default: settings.primary_color
   assign text_color = section.settings.text_color | default: settings.secondary_color
+  assign column_blocks = section.blocks | where: 'type', 'column'
+  assign row_blocks = section.blocks | where: 'type', 'row'
+  assign actual_columns = column_blocks.size
+  assign display_columns = section.settings.columns | at_most: actual_columns
 %}
 
 <section style="background: {{ bg_color }}; color: {{ text_color }}">
-  <div class="scroll-fade-in container grid grid-cols-2 gap-12 md:py-9 py-7">
+  <div class="scroll-fade-in container grid md:grid-cols-2 md:gap-12 gap-5 md:py-9 py-7">
     <div>
       <h2 class="md:text-[39px] text-3xl font-bold text-center">
         {{ section.settings.title_product_highlights }}
@@ -25,34 +29,129 @@
         <thead style="color: {{ text_color }}">
           <tr>
             <th class="py-1.5 px-2.5"></th>
-            <th style="background: {{ section.settings.color_column_even }};" class="rounded-t-2xl py-1.5 px-2.5">
-              Product A
-            </th>
-            <th class="rounded-t-2xl py-1.5 px-2.5">Product B</th>
+            {% if actual_columns > 0 %}
+              {% for block in column_blocks limit: display_columns %}
+                {% assign is_even = forloop.index0 | modulo: 2 %}
+                <th
+                  style="{% if is_even == 0 %}background: {{ section.settings.color_column_even }};{% endif %}"
+                  class="rounded-t-2xl py-1.5 px-2.5 md:text-lg text-[15px]"
+                >
+                  {{ block.settings.title }}
+                </th>
+              {% endfor %}
+            {% else %}
+              <th
+                style="background: {{ section.settings.color_column_even }};"
+                class="rounded-t-2xl py-1.5 px-2.5 md:text-lg text-[15px]"
+              >
+                Product A
+              </th>
+              <th
+                class="rounded-t-2xl py-1.5 px-2.5 md:text-lg text-[15px]"
+              >
+                Product B
+              </th>
+            {% endif %}
           </tr>
         </thead>
         <tbody>
-          <tr class="border-b">
-            <td style="background: {{ text_color }};" class="rounded-tl-2xl py-2.5 px-4 text-lg font-bold text-center">
-              Real-Time Tracking
-            </td>
-            <td style="background: {{ section.settings.color_column_even }};" class="py-2.5 px-5">
-              {% render 'icon-status', status: true %}
-            </td>
-            <td style="background: {{ text_color }};" class="rounded-tr-2xl py-2.5 px-4">
-              {% render 'icon-status', status: false, text_color: bg_color %}
-            </td>
-          </tr>
-          <tr class="border-b">
-            <td style="background: {{ text_color }};" class="py-2.5 px-4 text-lg font-bold text-center">
-              User-Friendly Interface
-            </td>
-            <td style="background: {{ section.settings.color_column_even }};" class="py-2.5 px-5">
-              {% render 'icon-status', status: true %}
-            </td>
-            <td style="background: {{ text_color }};" class="py-2.5 px-4">
-              {% render 'icon-status', status: false, text_color: bg_color %}
-            </td>
+          {% if actual_columns > 0 %}
+            {% for block in row_blocks %}
+              {% liquid
+                assign first_loop = forloop.first
+                assign last_loop = forloop.last
+              %}
+              <tr class="{% unless last_loop %}border-b border-[#46464638]{% endunless %}">
+                <td
+                  style="background: {{ text_color }};"
+                  class="py-2.5 px-4 md:text-lg text-[15px] font-bold text-center {% if first_loop %}rounded-tl-2xl{% endif %} {% if last_loop %}rounded-bl-2xl{% endif %}"
+                >
+                  {{ block.settings.title }}
+                </td>
+                {% for i in (1..display_columns) %}
+                  {% liquid
+                    assign is_even = forloop.index0 | modulo: 2
+                    assign index = forloop.index0 | plus: 1
+                    assign key = 'status_' | append: index
+                    assign status_value = block.settings[key]
+                    assign is_last = forloop.last
+                  %}
+                  <td
+                    style="background: {% if is_even == 0 %}{{ section.settings.color_column_even }}{% else %}{{ text_color }}{% endif %};"
+                    class="py-2.5 px-5 {% if first_loop and is_last %}rounded-tr-2xl{% endif %} {% if last_loop and is_last %}rounded-br-2xl{% endif %}"
+                  >
+                    {% if is_even == 0 %}
+                      {% render 'icon-status', status: status_value %}
+                    {% else %}
+                      {% render 'icon-status', status: status_value, text_color: bg_color %}
+                    {% endif %}
+                  </td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr class="border-b border-[#46464638]">
+              <td
+                style="background: {{ text_color }};"
+                class="py-2.5 px-4 md:text-lg text-[15px] font-bold text-center rounded-tl-2xl"
+              >
+                Real-Time Tracking
+              </td>
+              <td
+                style="background: {{ section.settings.color_column_even }};"
+                class="py-2.5 px-5"
+              >
+                {% render 'icon-status', status: true %}
+              </td>
+              <td
+                style="background: {{ text_color }};"
+                class="py-2.5 px-5 rounded-tr-2xl"
+              >
+                {% render 'icon-status', status: false, text_color: bg_color %}
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="background: {{ text_color }};"
+                class="py-2.5 px-4 md:text-lg text-[15px] font-bold text-center rounded-bl-2xl"
+              >
+                User-Friendly Interface
+              </td>
+              <td
+                style="background: {{ section.settings.color_column_even }};"
+                class="py-2.5 px-5"
+              >
+                {% render 'icon-status', status: true %}
+              </td>
+              <td
+                style="background: {{ text_color }};"
+                class="py-2.5 px-5 rounded-br-2xl"
+              >
+                {% render 'icon-status', status: false, text_color: bg_color %}
+              </td>
+            </tr>
+            <tr>
+              <th class="py-4 px-2.5"></th>
+              <th
+                style="background: {{ section.settings.color_column_even }};"
+                class="rounded-b-2xl py-4 px-2.5"
+              ></th>
+              <th class="py-4 px-2.5"></th>
+            </tr>
+          {% endif %}
+          <tr>
+            <th class="py-4 px-2.5"></th>
+            {% for block in column_blocks limit: display_columns %}
+              {% assign is_even = forloop.index0 | modulo: 2 %}
+              {% if is_even == 0 %}
+                <th
+                  style="background: {{ section.settings.color_column_even }};"
+                  class="rounded-b-2xl py-4 px-2.5"
+                ></th>
+              {% else %}
+                <th class="py-4 px-2.5"></th>
+              {% endif %}
+            {% endfor %}
           </tr>
         </tbody>
       </table>
@@ -111,6 +210,66 @@
       "type": "color",
       "label": "t:general.colors",
       "default": "#2e2a39"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "label": "t:general.column"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "t:general.column",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:options.text_style.title",
+          "default": "Title"
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "name": "t:general.row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:options.text_style.title",
+          "default": "Title"
+        },
+        {
+          "type": "checkbox",
+          "id": "status_1",
+          "label": "t:labels.status",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "status_2",
+          "label": "t:labels.status",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "status_3",
+          "label": "t:labels.status",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "status_4",
+          "label": "t:labels.status",
+          "default": false
+        }
+      ]
     }
   ],
   "presets": [
