@@ -1,0 +1,83 @@
+{% liquid
+  assign bg_color = section.settings.background_color | default: settings.primary_color
+  assign text_color = section.settings.text_color | default: settings.secondary_color
+%}
+
+<sticky-scroll-to-top class="fixed z-10 right-5 bottom-5 transition-transform duration-300 translate-y-20">
+  <section
+    class="size-10 rounded-full flex items-center justify-center"
+    style="background: {{ bg_color }}; color: {{ text_color }};"
+  >
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      data-prefix="fas"
+      data-icon="chevron-up"
+      class="size-[22px]"
+      role="img"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512"
+    >
+      <path fill="currentColor" d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"></path>
+    </svg>
+  </section>
+</sticky-scroll-to-top>
+
+{% javascript %}
+  class StickyScrollToTop extends HTMLElement {
+    constructor() {
+      super();
+      this.visible = false;
+    }
+
+    connectedCallback() {
+      this.onScrollHandler = this.onScroll.bind(this);
+      window.addEventListener('scroll', this.onScrollHandler);
+
+      this.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    disconnectedCallback() {
+      window.removeEventListener('scroll', this.onScrollHandler);
+    }
+
+    onScroll() {
+      const shouldShow = window.scrollY > window.innerHeight;
+
+      if (shouldShow && !this.visible) {
+        this.visible = true;
+        this.classList.remove('translate-y-20');
+      } else if (!shouldShow && this.visible) {
+        this.visible = false;
+        this.classList.add('translate-y-20');
+      }
+    }
+  }
+  customElements.define('sticky-scroll-to-top', StickyScrollToTop);
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:general.sticky_scroll_to_top",
+  "settings": [
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "t:labels.background"
+    },
+    {
+      "id": "text_color",
+      "type": "color",
+      "label": "t:general.colors"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.sticky_scroll_to_top",
+      "category": "Body"
+    }
+  ]
+}
+{% endschema %}

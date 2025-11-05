@@ -1,1 +1,56 @@
-<section>1</section>
+<section class="sticky md:top-9 top-7">
+  <div class="swiper main-product rounded-2xl overflow-hidden md:max-w-[100vh]">
+    <div class="swiper-wrapper">
+      {% for image in images %}
+        <div class="swiper-slide w-full aspect-square">
+          <img
+            src="{{ image | image_url: width: 715 }}"
+            width="715"
+            height="715"
+            class="object-center object-cover size-full"
+            alt="main image"
+          >
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="swiper thumb-product">
+    <div class="swiper-wrapper">
+      {% for image in images %}
+        <div class="swiper-slide w-full aspect-square [&.swiper-slide-thumb-active_img]:border">
+          <img
+            style="border-color: {{ text_color }}"
+            src="{{ image | image_url: width: 135 }}"
+            width="715"
+            height="715"
+            class="object-center object-cover rounded-xl size-full"
+            alt="thumb image"
+          >
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function () {
+    const thumbsSwiper = new Swiper('.thumb-product', {
+      spaceBetween: 10,
+      slidesPerView: 5,
+      freeMode: true,
+      watchSlidesProgress: true,
+    });
+
+    const mainSwiper = new Swiper('.main-product', {
+      spaceBetween: 10,
+      loop: true,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      thumbs: {
+        swiper: thumbsSwiper,
+      },
+    });
+  });
+{% endjavascript %}

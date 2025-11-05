@@ -13,7 +13,7 @@
           font-family: var(--font-primary-font);
         }
     {% endstyle %}
-    {% comment %} <script src="{{ 'product-custom.js' | asset_url }}" defer="defer"></script> {% endcomment %}
+
     {{ 'output.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     <link
@@ -21,7 +21,7 @@
       href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"
     >
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js" async></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js" defer="defer"></script>
   </head>
 
   <body>

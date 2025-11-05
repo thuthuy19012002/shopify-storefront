@@ -45,6 +45,10 @@
     "features-section": {
       "type": "features-section",
       "settings": {}
+    },
+    "sticky-scroll-to-top": {
+      "type": "sticky-scroll-to-top",
+      "settings": {}
     }
   },
   "order": [
@@ -57,6 +61,7 @@
     "section-break-3",
     "product-specifications",
     "customer-testimonials",
-    "features-section"
+    "features-section",
+    "sticky-scroll-to-top"
   ]
 }

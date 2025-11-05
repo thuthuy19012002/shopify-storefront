@@ -3,15 +3,17 @@
   assign text_button = text_button | default: 'text'
   assign bg_color = bg_color | default: settings.primary_color
   assign text_color = text_color | default: settings.secondary_color
+  assign class_text = class_text | default: ''
+  assign class_btn = class_btn | default: ''
 %}
 
 {% case type %}
   {% when 'first' %}
     <button
-      style="border-color: {{ text_color }}; color: {{ text_color }}"
-      class="group relative flex items-center overflow-hidden border-2 rounded-lg px-7 py-3 text-lg font-bold transition-all duration-300 hover:pr-14"
+      style="border-color: {{ text_color }}; color: {{ text_color }}; background: {{ bg_color }};"
+      class="group relative flex items-center overflow-hidden border-2 rounded-lg px-7 py-3 text-lg font-bold transition-all duration-300 hover:pr-14 !w-fit {{ class_btn }}"
     >
-      <span class="uppercase text-base font-bold">{{ text_button }}</span>
+      <span class="uppercase text-base font-bold {{ class_text }}">{{ text_button }}</span>
       <span
         class="absolute right-0 translate-x-6 group-hover:-translate-x-6 transition-all duration-300"
       >
@@ -21,31 +23,31 @@
   {% when 'second' %}
     <button
       style="--custom_bg_color: {{ bg_color }}; --custom_text_color: {{ text_color }};"
-      class="group relative uppercase text-xl font-bold w-full rounded-lg border-2 border-[var(--custom_text_color)] flex justify-center overflow-hidden"
+      class="group relative uppercase text-xl font-bold w-full rounded-lg border-2 border-[var(--custom_text_color)] flex justify-center overflow-hidden {{ class_btn }}"
     >
       <span
         class="absolute left-1/2 -translate-x-1/2 h-full w-[calc(100%+5px)] transition-all duration-300 group-hover:w-0 bg-[var(--custom_text_color)]"
       ></span>
-      <span class="relative py-2 text-center transition-all duration-300 text-[var(--custom_bg_color)] group-hover:text-[var(--custom_text_color)]">
+      <span class="relative py-2 text-center transition-all duration-300 text-[var(--custom_bg_color)] group-hover:text-[var(--custom_text_color)] {{ class_text }}">
         {{ text_button }}
       </span>
     </button>
   {% when 'third' %}
     <button
       style="--custom_bg_color: {{ text_color}}; --custom_text_color: {{ bg_color }};"
-      class="group relative text-base font-bold !w-fit px-7 rounded-lg border-2 border-[var(--custom_text_color)] flex justify-center overflow-hidden"
+      class="group relative text-base font-bold !w-fit px-7 rounded-lg border-2 border-[var(--custom_text_color)] flex items-center justify-center overflow-hidden {{ class_btn }}"
     >
       <span
         class="absolute left-1/2 -translate-x-1/2 h-full w-[calc(100%+5px)] transition-all duration-300 group-hover:w-0 bg-[var(--custom_text_color)]"
       ></span>
-      <span class="relative py-2 text-center transition-all duration-300 text-[var(--custom_bg_color)] group-hover:text-[var(--custom_text_color)]">
+      <span class="relative py-2 text-center transition-all duration-300 text-[var(--custom_bg_color)] group-hover:text-[var(--custom_text_color)] {{ class_text }}">
         {{ text_button }}
       </span>
     </button>
   {% else %}
     <button
       style="border-color: {{ text_color }}; color: {{ text_color }}"
-      class="group relative uppercase text-xl font-bold w-full rounded-lg border-2 py-2 mt-2.5 flex justify-center"
+      class="group relative uppercase text-xl font-bold w-full rounded-lg border-2 py-2 mt-2.5 flex justify-center {{ class_text }} {{ class_btn }}"
     >
       {{ text_button }}
     </button>

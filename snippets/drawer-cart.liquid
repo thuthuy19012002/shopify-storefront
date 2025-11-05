@@ -26,18 +26,40 @@
     </div>
     <div class="drawer-side">
       <label for="my-drawer-5" aria-label="close sidebar" class="drawer-overlay"></label>
-      <div
-        style="background: {{ text_color }}; color: {{ background_color }};"
-        class="w-[400px] max-w-[calc(100vw-30px)] min-h-full"
-      >
-        <div class="p-4 relative border-b border-[#12121214]">
-          <h2 class="text-[31px] font-bold">Cart • {{ cart.item_count }} items</h2>
-          <label for="my-drawer-5">
+
+      {% if cart.item_count > 0 %}
+        <div
+          style="background: {{ text_color }}; color: {{ background_color }};"
+          class="w-[400px] max-w-[calc(100vw-30px)] min-h-full"
+        >
+          <div class="p-4 relative border-b border-[#12121214]">
+            <h2 class="text-[31px] font-bold">Cart • {{ cart.item_count }} items</h2>
+            <label for="my-drawer-5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                focusable="false"
+                class="size-6 absolute top-7 right-4"
+                fill="none"
+                viewBox="0 0 18 17"
+              >
+                  <path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.431 7.579 7.282a.501.501 0 00.846-.37.5.5 0 00-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 10-.707-.708L8.991 7.853 1.413.573a.5.5 0 10-.693.72l7.563 7.268-7.418 7.417z" fill="currentColor">
+                </path>
+              </svg>
+            </label>
+          </div>
+        </div>
+      {% else %}
+        <div
+          style="background: {{ text_color }}; color: {{ background_color }};"
+          class="sm:w-[400px] w-full sm:max-w-[calc(100vw-30px)] min-h-full relative flex items-center"
+        >
+          <label for="my-drawer-5" class="absolute right-6 top-5">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
               focusable="false"
-              class="size-6 absolute top-7 right-4"
+              class="size-6"
               fill="none"
               viewBox="0 0 18 17"
             >
@@ -45,8 +67,18 @@
               </path>
             </svg>
           </label>
+          <div class="w-full px-[15px]">
+            <h2 class="md:text-[31px] text-[26px] font-bold text-center md:mb-7 mb-5">Your cart is empty</h2>
+            {% render 'custom-button',
+              type: 'first',
+              bg_color: background_color,
+              text_color: text_color,
+              text_button: 'Continue shopping',
+              class_btn: 'mx-auto'
+            %}
+          </div>
         </div>
-      </div>
+      {% endif %}
     </div>
   </div>
 </cart-drawer>

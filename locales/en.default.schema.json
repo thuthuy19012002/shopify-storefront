@@ -42,7 +42,9 @@
     "why_choose_us": "Why choose us",
     "product_specifications": "Product Specifications",
     "customer_testimonials": "Customer Testimonials",
-    "features_section": "Features section"
+    "features_section": "Features section",
+    "sticky_product_detail": "Sticky product detail",
+    "sticky_scroll_to_top": "Sticky scroll to top"
   },
   "labels": {
     "alignment": "Alignment",

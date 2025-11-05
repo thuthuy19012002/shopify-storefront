@@ -1,0 +1,124 @@
+{% if template.name == 'product' %}
+  {% liquid
+    assign bg_color = section.settings.background_color | default: settings.secondary_color
+    assign text_color = section.settings.text_color | default: settings.primary_color
+    assign price_product = product.price | divided_by: 1
+    assign compare_at_price_product = product.compare_at_price | divided_by: 1
+    assign discount_percent_product = 100 | times: price_product | divided_by: compare_at_price_product
+    assign color_button = section.settings.color_button | default: settings.primary_color
+  %}
+
+  <sticky-product-detail
+    class="fixed bottom-0 w-full z-10 py-2.5 shadow-[0_-1px_10px_#0003] transition-transform duration-300 translate-y-full"
+    style="background: {{ bg_color }}; color: {{ text_color }};"
+  >
+    <section class="container flex md:gap-4 gap-2.5">
+      <img
+        src="{{ product.featured_image | image_url: width: 52}}"
+        alt="{{ product.title }}"
+        width="52"
+        height="52"
+        class="size-[52px] object-cover"
+      >
+      <div>
+        <h4 class="md:text-[19px] text-[17px] font-bold">{{ product.title }}</h4>
+        <div class="flex items-center gap-1.5">
+          <span class="text-lg font-bold">{{ price_product | money }}</span>
+          <span class="text-base font-bold line-through">{{ compare_at_price_product | money }}</span>
+          <div
+            class="flex items-center gap-1.5 px-1.5 py-0.5 rounded-md"
+            style="color: {{ bg_color }}; background: {{ color_button }};"
+          >
+            {% render 'icon-discount', text_color: bg_color, class_icon: 'size-[13px]' %}
+            <span class="text-[13px] font-bold">SAVE {{ discount_percent_product | round }}%</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex-1 flex items-center justify-end">
+        {% render 'custom-button',
+          type: 'third',
+          text_button: section.settings.text_button,
+          text_color: bg_color,
+          bg_color: color_button,
+          class_text: 'md:text-[19px] text-[17px]',
+          class_btn: 'h-full'
+        %}
+      </div>
+    </section>
+  </sticky-product-detail>
+{% endif %}
+
+{% javascript %}
+  class StickyProductDetail extends HTMLElement {
+    constructor() {
+      super();
+      this.visible = false;
+    }
+
+    connectedCallback() {
+      this.onScrollHandler = this.onScroll.bind(this);
+      window.addEventListener('scroll', this.onScrollHandler);
+
+      this.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    disconnectedCallback() {
+      window.removeEventListener('scroll', this.onScrollHandler);
+    }
+
+    onScroll() {
+      const shouldShow = window.scrollY > window.innerHeight;
+
+      if (shouldShow && !this.visible) {
+        this.visible = true;
+        this.classList.remove('translate-y-full');
+      } else if (!shouldShow && this.visible) {
+        this.visible = false;
+        this.classList.add('translate-y-full');
+      }
+    }
+  }
+  customElements.define('sticky-product-detail', StickyProductDetail);
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:general.sticky_product_detail",
+  "settings": [
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "t:labels.background"
+    },
+    {
+      "id": "text_color",
+      "type": "color",
+      "label": "t:general.colors"
+    },
+    {
+      "type": "header",
+      "content": "t:labels.button"
+    },
+    {
+      "id": "color_button",
+      "type": "color",
+      "label": "t:general.colors",
+      "default": "#b90000"
+    },
+    {
+      "id": "text_button",
+      "type": "text",
+      "label": "t:general.text",
+      "default": "Add to cart"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.sticky_product_detail",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

@@ -1,20 +1,4 @@
 {% comment %}
-  <div class="product-images">
-    {% for image in product.images %}
-      {% render 'image', class: 'product-image', image: image %}
-    {% endfor %}
-  </div>
-{% endcomment %}
-
-{% comment %}
-  <div class="product-info">
-    <h1>{{ product.title }}</h1>
-    <p>{{ product.price | money }}</p>
-    <p>{{ product.description }}</p>
-  </div>
-{% endcomment %}
-
-{% comment %}
   <div class="product-form">
     {% form 'product', product %}
       {% assign current_variant = product.selected_or_first_available_variant %}
@@ -46,16 +30,32 @@
 <main style="background: {{ bg_color }}; color: {{ text_color }};">
   <div class="container md:py-9 py-7 flex">
     <div class="w-[55%]">
-      {% render 'images-product-section', images=product.images %}
+      {% render 'images-product-section', images: product.images, text_color: text_color %}
     </div>
-    <div class="flex-1">2</div>
+    <div class="flex-1 pl-[50px]">
+      <h1 class="md:text-[39px] text-[29px] font-bold">{{ product.title }}</h1>
+      <div class="[&_h2]:font-bold [&_h2]:md:text-[39px] [&_h2]:text-[26px] [&_h3]:font-bold [&_h3]:md:text-[23.4px] [&_h3]:text-[22px] md:space-y-6 space-y-5">
+        {{ product.description }}
+      </div>
+    </div>
   </div>
 </main>
 
 {% schema %}
 {
   "name": "t:general.product",
-  "settings": [],
+  "settings": [
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "t:labels.background"
+    },
+    {
+      "id": "text_color",
+      "type": "color",
+      "label": "t:general.colors"
+    }
+  ],
   "disabled_on": {
     "groups": ["header", "footer"]
   }

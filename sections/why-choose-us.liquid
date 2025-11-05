@@ -29,17 +29,7 @@
         <thead style="color: {{ text_color }}">
           <tr>
             <th class="py-1.5 px-2.5"></th>
-            {% if actual_columns > 0 %}
-              {% for block in column_blocks limit: display_columns %}
-                {% assign is_even = forloop.index0 | modulo: 2 %}
-                <th
-                  style="{% if is_even == 0 %}background: {{ section.settings.color_column_even }};{% endif %}"
-                  class="rounded-t-2xl py-1.5 px-2.5 md:text-lg text-[15px]"
-                >
-                  {{ block.settings.title }}
-                </th>
-              {% endfor %}
-            {% else %}
+            {% if actual_columns == 0 and row_blocks.size == 0 %}
               <th
                 style="background: {{ section.settings.color_column_even }};"
                 class="rounded-t-2xl py-1.5 px-2.5 md:text-lg text-[15px]"
@@ -51,45 +41,21 @@
               >
                 Product B
               </th>
+            {% else %}
+              {% for block in column_blocks limit: display_columns %}
+                {% assign is_even = forloop.index0 | modulo: 2 %}
+                <th
+                  style="{% if is_even == 0 %}background: {{ section.settings.color_column_even }};{% endif %}"
+                  class="rounded-t-2xl py-1.5 px-2.5 md:text-lg text-[15px]"
+                >
+                  {{ block.settings.title }}
+                </th>
+              {% endfor %}
             {% endif %}
           </tr>
         </thead>
         <tbody>
-          {% if actual_columns > 0 %}
-            {% for block in row_blocks %}
-              {% liquid
-                assign first_loop = forloop.first
-                assign last_loop = forloop.last
-              %}
-              <tr class="{% unless last_loop %}border-b border-[#46464638]{% endunless %}">
-                <td
-                  style="background: {{ text_color }};"
-                  class="py-2.5 px-4 md:text-lg text-[15px] font-bold text-center {% if first_loop %}rounded-tl-2xl{% endif %} {% if last_loop %}rounded-bl-2xl{% endif %}"
-                >
-                  {{ block.settings.title }}
-                </td>
-                {% for i in (1..display_columns) %}
-                  {% liquid
-                    assign is_even = forloop.index0 | modulo: 2
-                    assign index = forloop.index0 | plus: 1
-                    assign key = 'status_' | append: index
-                    assign status_value = block.settings[key]
-                    assign is_last = forloop.last
-                  %}
-                  <td
-                    style="background: {% if is_even == 0 %}{{ section.settings.color_column_even }}{% else %}{{ text_color }}{% endif %};"
-                    class="py-2.5 px-5 {% if first_loop and is_last %}rounded-tr-2xl{% endif %} {% if last_loop and is_last %}rounded-br-2xl{% endif %}"
-                  >
-                    {% if is_even == 0 %}
-                      {% render 'icon-status', status: status_value %}
-                    {% else %}
-                      {% render 'icon-status', status: status_value, text_color: bg_color %}
-                    {% endif %}
-                  </td>
-                {% endfor %}
-              </tr>
-            {% endfor %}
-          {% else %}
+          {% if actual_columns == 0 and row_blocks.size == 0 %}
             <tr class="border-b border-[#46464638]">
               <td
                 style="background: {{ text_color }};"
@@ -138,6 +104,40 @@
               ></th>
               <th class="py-4 px-2.5"></th>
             </tr>
+          {% else %}
+            {% for block in row_blocks %}
+              {% liquid
+                assign first_loop = forloop.first
+                assign last_loop = forloop.last
+              %}
+              <tr class="{% unless last_loop %}border-b border-[#46464638]{% endunless %}">
+                <td
+                  style="background: {{ text_color }};"
+                  class="py-2.5 px-4 md:text-lg text-[15px] font-bold text-center {% if first_loop %}rounded-tl-2xl{% endif %} {% if last_loop %}rounded-bl-2xl{% endif %}"
+                >
+                  {{ block.settings.title }}
+                </td>
+                {% for i in (1..display_columns) %}
+                  {% liquid
+                    assign is_even = forloop.index0 | modulo: 2
+                    assign index = forloop.index0 | plus: 1
+                    assign key = 'status_' | append: index
+                    assign status_value = block.settings[key]
+                    assign is_last = forloop.last
+                  %}
+                  <td
+                    style="background: {% if is_even == 0 %}{{ section.settings.color_column_even }}{% else %}{{ text_color }}{% endif %};"
+                    class="py-2.5 px-5 {% if first_loop and is_last %}rounded-tr-2xl{% endif %} {% if last_loop and is_last %}rounded-br-2xl{% endif %}"
+                  >
+                    {% if is_even == 0 %}
+                      {% render 'icon-status', status: status_value %}
+                    {% else %}
+                      {% render 'icon-status', status: status_value, text_color: bg_color %}
+                    {% endif %}
+                  </td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
           {% endif %}
           <tr>
             <th class="py-4 px-2.5"></th>

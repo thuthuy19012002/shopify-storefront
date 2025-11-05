@@ -4,13 +4,23 @@
       "type": "product",
       "settings": {}
     },
+    "sticky-product-detail": {
+      "type": "sticky-product-detail",
+      "settings": {}
+    },
     "section-break-wave": {
       "type": "section-break-wave",
+      "settings": {}
+    },
+    "sticky-scroll-to-top": {
+      "type": "sticky-scroll-to-top",
       "settings": {}
     }
   },
   "order": [
     "main",
-    "section-break-wave"
+    "sticky-product-detail",
+    "section-break-wave",
+    "sticky-scroll-to-top"
   ]
 }
